@@ -4,7 +4,16 @@ import { PrismaClient } from '@prisma/client'
 @Injectable()
 export class UserService {
     prisma = new PrismaClient()
-    getUser(userId: string) {
+    async getUser(userId: string) {
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+        })
+        if (user) {
+            return {
+                id: user.id,
+                password: user.password,
+            }
+        }
         return {
             userId,
         }
