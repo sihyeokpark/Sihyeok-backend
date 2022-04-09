@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common'
 import { PrismaClient } from '@prisma/client'
-import { type } from 'os'
 
 type IUser = {
     id: string
@@ -21,14 +20,12 @@ export class UserService {
 
     async getUser(userId: string) {
         const user: IUser | false = await this.isUserExist(userId)
-        if (user) return userId
+        if (user) return { ...user }
         else throw new NotFoundException(`${userId} is not exist`)
     }
 
     async createUser(userData) {
-        const oldUser = await this.prisma.user.findUnique({
-            where: { id: userData.id },
-        })
+        const oldUser: IUser | false = await this.isUserExist(userData.id)
         if (oldUser)
             throw new NotFoundException(`Already Id ${oldUser.id} exist`)
         const newUser = await this.prisma.user.create({
