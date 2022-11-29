@@ -2,15 +2,10 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-}
-
-model user {
-    id  String @id
-    password String
+    provider = "sqlite"
+    url      = env("DATABASE_URL")
 }
